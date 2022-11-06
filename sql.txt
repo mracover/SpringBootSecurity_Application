@@ -1,0 +1,7 @@
+insert into users(id, age, email, password, username)
+VALUES (1, 20, 'admig@gmail.com', '$2y$08$.CKQVS52lr1EpWb6jP.Sme0RhnDM2zFz0FYBibvnexZt4FMhaLKhu', 'admin'),
+       (2, 25, 'user@gmail.com', '$2y$08$hTKHvdBysh.B1lB.ncGmiO1SD8.pdnTrOYoCJN14geZ9.ldeclnF2', 'user')
+
+insert into roles(id, roles) VALUES (1, 'ADMIN'), (2, 'USER')
+
+insert into user_role(user_id, role_id) VALUES (1, 1), (1, 2), (2,2)
