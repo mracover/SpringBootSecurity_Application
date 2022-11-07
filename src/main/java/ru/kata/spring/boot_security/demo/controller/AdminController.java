@@ -6,7 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
+import ru.kata.spring.boot_security.demo.service.RoleServiceImp;
 import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
 import java.util.ArrayList;
 
@@ -19,7 +21,7 @@ public class AdminController {
     private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService) {
+    public AdminController(UserServiceImp userService, RoleServiceImp roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
