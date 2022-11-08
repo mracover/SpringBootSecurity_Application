@@ -19,14 +19,13 @@ import ru.kata.spring.boot_security.demo.service.CustomUserDetailService;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private CustomUserDetailService customUserDetailService;
+    private final CustomUserDetailService customUserDetailService;
     private final SuccessUserHandler successUserHandler;
-
-    public WebSecurityConfig(SuccessUserHandler successUserHandler) {
+    @Autowired
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, CustomUserDetailService customUserDetailService) {
         this.successUserHandler = successUserHandler;
+        this.customUserDetailService = customUserDetailService;
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

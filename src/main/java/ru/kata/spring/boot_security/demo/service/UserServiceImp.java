@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserRepository;
 import ru.kata.spring.boot_security.demo.entity.User;
 
@@ -15,31 +16,37 @@ public class UserServiceImp implements UserService{
 
     @Autowired
     public UserServiceImp(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+        this.userRepository =  userRepository;
         this.passwordEncoder = passwordEncoder;
-
     }
 
+    @Transactional
     public List<User> getAll() {
-        return userRepository.findAll();
+        return userRepository.getAll();
     }
 
+    @Transactional
     public User getById(long id) {
-        return userRepository.getById(id);
+        return userRepository.getUser(id);
     }
 
+    @Transactional
     public void deleteUser(long id) {
-        userRepository.deleteById(id);
+        userRepository.deleteUser(id);
     }
 
+    @Transactional
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        userRepository.addUser(user);
     }
 
+    @Transactional
     public void updateUser(User user) {
-        userRepository.save(user);
+        userRepository.updateUser(user);
     }
+
+    @Transactional
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }

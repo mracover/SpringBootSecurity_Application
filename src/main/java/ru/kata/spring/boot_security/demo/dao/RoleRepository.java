@@ -7,6 +7,9 @@ import ru.kata.spring.boot_security.demo.entity.Role;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
-public interface RoleRepository extends JpaRepository<Role, Long> {
+
+public interface RoleRepository {
+
+    public List<Role> getAllRoles();
+    public List<Role> findByIdRoles(List<Long> id);
 }
