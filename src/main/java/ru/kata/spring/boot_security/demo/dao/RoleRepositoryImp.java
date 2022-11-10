@@ -21,7 +21,7 @@ public class RoleRepositoryImp implements RoleRepository {
 
     @Override
     public List<Role> findByIdRoles(List<Long> id) {
-        return entityManager.createQuery("select a from Role a where a.id = :id", Role.class)
+        return entityManager.createQuery("select a from Role a where a.id in :id", Role.class)
                 .setParameter("id", id).getResultList();
     }
 }

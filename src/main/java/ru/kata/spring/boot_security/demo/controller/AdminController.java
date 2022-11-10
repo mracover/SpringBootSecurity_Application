@@ -10,6 +10,7 @@ import ru.kata.spring.boot_security.demo.service.RoleServiceImp;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
+import java.security.Principal;
 import java.util.ArrayList;
 
 @Controller
@@ -27,9 +28,11 @@ public class AdminController {
     }
 
     @GetMapping("")
-    public String getAllUsers(Model model) {
+    public String getAllUsers(Model model, Principal principal) {
         model.addAttribute("alluser", userService.getAll());
-        return "admin";
+        model.addAttribute("userEmail", userService.findByUsername(principal.getName()));
+        model.addAttribute("newUser", new User());
+        return "admin-panel";
     }
 
     @DeleteMapping("/{id}")
@@ -38,28 +41,19 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping ("/edit/{id}")
-    public String editUser(@PathVariable("id") long id, Model model) {
-        model.addAttribute("edit", userService.getById(id));
-        return "edit-user";
-    }
 
-    @PatchMapping("/edit")
-    public String edit(@ModelAttribute("edit") User user, @RequestParam("listRoles") ArrayList<Long> roles) {
+
+    @PatchMapping("/edit/{id}")
+    public String edit(@ModelAttribute("newUser") User user, @RequestParam("listRoles") ArrayList<Long> roles, @PathVariable("id") long id) {
         user.setRoles(roleService.findByIdRoles(roles));
         userService.updateUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/new")
-    public String addUser(Model model) {
-        User user = new User();
-        model.addAttribute("adduser",user);
-        return "new-user";
-    }
 
     @PostMapping("/new")
-    public String addNewUser(@ModelAttribute("adduser") User user, @RequestParam("listRoles") ArrayList<Long> roles){
+    public String addNewUser(@ModelAttribute("newUser") User user,
+                             @RequestParam("listRoles") ArrayList<Long> roles){
         user.setRoles(roleService.findByIdRoles(roles));
         userService.saveUser(user);
         return "redirect:/admin";
