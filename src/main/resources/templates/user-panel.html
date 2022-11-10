@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang=ru>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>User page</title>
+</head>
+<body>
+    <div>
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a href="#" class="navbar-brand">
+                    <span class="fw-bold" th:utext="*{usergetter.email}">EMAIL</span>
+                    <span>with roles:</span>
+                    <span sec:authorize="hasAuthority('ADMIN')">ADMIN</span>
+                    <span sec:authorize="hasAuthority('USER')">USER</span>
+                </a>
+                <a class="text-decoration-none font-weight-bold text-secondary" th:href="@{/logout}" th:method="POST">Logout</a>
+            </div>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 px-0 pt-3">
+                <ul class="nav flex-column nav-pills border-0" id="myTab" role="tablist">
+                    <li class="nav-item text-left" sec:authorize="hasAuthority('ADMIN')">
+                        <a class="nav-link" th:href="@{'/admin'}" th:method="GET">Admin</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="user-tab" data-bs-toggle="pill" data-bs-target="#user" type="button"role="pill" aria-controls="user" aria-selected="false" sec:authorize="hasAuthority('USER')">User</a>
+                    </li>
+                </ul>
+            </div>
+            <!--TAB PANES-->
+            <div class="tab-content col-10 vh-100 bg-light pt-3">
+                <div class="tab-pane active" id="user" role="tabpanel" aria-labelledby="user-tab">
+                    <h1 class="pb-4 ps-3">User information-page</h1>
+                    <div class="container-fluid ps-3">
+                        <div class="border text-bg-light rounded-top">
+                            <h5 class="p-3 m-0">About user</h5>
+                        </div>
+                        <div class="border bg-white p-4 rounded-bottom">
+                            <table class="table">
+                                <tr class="border-top align-middle" style="height: 50px">
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Age</th>
+                                    <th scope="col">Email</th>
+                                    <th colspan="2" scope="col">Role</th>
+                                </tr>
+                                <tr th:object="${usergetter}" class="table-light align-middle" style="height: 50px">
+                                    <td th:utext="${usergetter.id}"></td>
+                                    <td th:utext="${usergetter.username}"></td>
+                                    <td th:utext="${usergetter.age}"></td>
+                                    <td th:utext="${usergetter.email}"></td>
+                                    <td>
+                                        <span th:each="role : *{getRoles()}" th:utext="${role.roles} + ' '"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</body>
+</html>

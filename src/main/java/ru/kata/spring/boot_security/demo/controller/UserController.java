@@ -22,6 +22,6 @@ public class UserController {
     @GetMapping("")
     public String userGet(Principal principal, Model model) {
         model.addAttribute("usergetter", userService.findByUsername(principal.getName()));
-        return "user";
+        return "user-panel";
     }
 }
