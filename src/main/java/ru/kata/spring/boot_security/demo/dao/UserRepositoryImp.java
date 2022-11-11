@@ -1,7 +1,5 @@
 package ru.kata.spring.boot_security.demo.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.entity.User;
 
@@ -17,7 +15,7 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public List<User> getAll() {
-        return entityManager.createQuery("select a from User a", User.class).getResultList();
+        return entityManager.createQuery("select distinct a from User a left join fetch a.roles", User.class).getResultList();
     }
 
     //Добавление user
@@ -46,7 +44,7 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public User findByUsername(String username) {
-        return entityManager.createQuery("select a from User a where a.username = :username", User.class)
+        return entityManager.createQuery("select distinct a from User a left join fetch a.roles where a.username = :username", User.class)
                 .setParameter("username", username).getSingleResult();
     }
 }

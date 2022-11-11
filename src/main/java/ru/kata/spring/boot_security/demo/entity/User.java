@@ -13,6 +13,7 @@ import java.util.List;
 
 @Entity
 @Table (name = "users")
+@NamedEntityGraph (name = "User.roles", attributeNodes = @NamedAttributeNode("roles"))
 public class User implements UserDetails {
 
     @Id
@@ -34,12 +35,11 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @Fetch(FetchMode.JOIN)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<Role>();
 
 
     public User() {
