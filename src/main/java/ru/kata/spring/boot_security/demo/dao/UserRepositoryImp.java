@@ -32,7 +32,7 @@ public class UserRepositoryImp implements UserRepository {
 
     //Удаление user
     @Override
-    public void deleteUser(Long id) {
+    public void deleteUser(long id) {
         User user = entityManager.find(User.class, id);
         entityManager.remove(user);
     }
